@@ -25,10 +25,10 @@ class Underling:
     #for printout purposes. ensure that this matches rollHd in subclasses
     hd='0d0'
     gristList = ('plush','dust','cobalt','mahogany','amber','bismuth',
-                 'cotton','loam','indigo','ebony','copper','phosphorous',
+                 'cotton','loam','indigo','ebony','copper','phosphorus',
                  'wool','sandstone','woad','ash','glass','rust',
-                 'brass','clay','azurite','wax','magnetite','aluminum',
-                 'linen','cobble','lamp-black','rosewood','vinyl','ink',
+                 'polyester','clay','azurite','wax','magnetite','aluminum',
+                 'linen','cobble','lampblack','rosewood','vinyl','ink',
                  'velvet','humus','turquoise','redwood','quartz','silver',
                  'silk','opal','ultramarine','fiddleback','ferrofluid','fulgurite',
                  'zillium','uranium','alkahest','quintessence','illiaster','orichalcum')
@@ -45,14 +45,22 @@ class Underling:
                        'flag_standard','flag_castle','leopard_spots','leopard_face',
                        'vine_leaves','vine_tendrils','onryou_hair','onryou_kimono',
                        'character_eyes','character_garb')
-                     
+
+    def types():
+        subclasses=Underling.__subclasses__()
+        underlingTypes = []
+        for each in subclasses:
+            each=str(each)
+            discard, name = each.split(".")
+            name, discard = name.split("'")
+            underlingTypes.append(name)
+        return underlingTypes
+       
 #
 #           
 #      HP ROLLING METHODS
 #
 #
-    #EDIT THIS
-    #
     def rollHd(self):
         #this method is overridden in subclasses of Underling to roll the correct size HD (by mass)
         return 0
@@ -249,7 +257,7 @@ class Underling:
         #cobalt
         elif grist == self.gristList[2]:
             #gives bonus HP
-            self.hp+=((self.level//14)+1)*2
+            self.hp+=(+1)*2
 
         #mahogany
         elif grist == self.gristList[3]:
@@ -268,7 +276,7 @@ class Underling:
 
         #cotton
         elif grist == self.gristList[6]:
-            self.special.add('')
+            print('fix')
             
         #loam
         elif grist == self.gristList[7]:
@@ -318,9 +326,13 @@ class Underling:
         elif grist == self.gristList[17]:
             self.special.add('Leaves a trail of rust as it walks. Attacks do '+str(self.basicDamage())+' ongoing damage (spindown, take # rolled in damage each time)')
 
-        #brass
+##        #brass
+##        elif grist == self.gristList[18]:
+##            self.special.add('Rings loudly when struck. This has a 1 in 6 chance of calling more underlings.')
+
+        #polyester
         elif grist == self.gristList[18]:
-            self.special.add('Rings loudly when struck. This has a 1 in 6 chance of calling more underlings.')
+            print('fix')
 
         #clay
         elif grist == self.gristList[19]:
@@ -737,6 +749,7 @@ class Basilisk_greater(Underling):
 class Gristmoss(Underling):
     name='Gristmoss'
     #actual number of HD is determined randomly in fillStats
+    #for the purposes of encounter_table and uses of it, the default level is assumed to be 3
     level=3
     #gristmoss has 1d4 HP per HD by mass
     hd='1d4'
@@ -828,81 +841,111 @@ class Giclops(Underling):
         self.incidental(13)
         self.special.add('Vulnerable [0] back, [-10] eye (def 17 from range)')
     
-##class Barghest(Underling):
-##    #grist 750
-##
-##class Semilich(Underling):
-##    #grist 600
-##
-##class Hydra(Underling):
-##    #grist 1100
-##
-##class Bruticorn(Underling):
-##    #grist 1500
-##
-##class Archlich(Underling):
-##    #grist 3000
-##
-##class Formoriarm(Underling):
-##    #grist 5k
-##
-##class Horrorse(Underling):
-##
-##class Spawntinel(Underling):
-##    #grist 4k
-##
-##class Spectaterror(Underling):
-##    #grist 10k
-##
-##class Roc(Underling):
-##
-##class Gigalisk(Underling):
-##    #grist 20k
-##
-##class Beast(Underling):
-##
-##class Minotyrant(Underling):
-##
-##class Kraken(Underling):
-##
-##class Acheron(Underling):
-##    #grist 100k
-##
-##class Collosus(Underling):
-##
-##class Titachnid(Underling):
-##
-##class Linnorm(Underling):
-##    #grist 250k
-##                            
-##class Leviathan(Underling):
-##
-##class Behemoth(Underling):
-##
-##class Lich_Queen(Underling):
+class Barghest(Underling):
+    pass
+    #grist 750
+
+class Semilich(Underling):
+    pass
+    #grist 600
+
+class Hydra(Underling):
+    pass
+    #grist 1100
+
+class Bruticorn(Underling):
+    pass
+    #grist 1500
+
+class Archlich(Underling):
+    pass
+    #grist 3000
+
+class Formoriarm(Underling):
+    pass
+    #grist 5k
+
+class Horrorse(Underling):
+    pass
+
+class Spawntinel(Underling):
+    pass
+    #grist 4k
+
+class Spectaterror(Underling):
+    pass
+    #grist 10k
+
+class Roc(Underling):
+    pass
+
+class Gigalisk(Underling):
+    pass
+    #grist 20k
+
+class Beast(Underling):
+    pass
+
+class Minotyrant(Underling):
+    pass
+
+class Kraken(Underling):
+    pass
+
+class Acheron(Underling):
+    pass
+    #grist 100k
+
+class Colossus(Underling):
+    pass
+
+class Titachnid(Underling):
+    pass
+
+class Linnorm(Underling):
+    pass
+    #grist 250k
+                            
+class Leviathan(Underling):
+    pass
+
+class Behemoth(Underling):
+    pass
+
+class Lich_queen(Underling):
+    pass
 ##    #gristworth 500k
     
 def makeEncounterTable(filename):
     import collections
     encounter_table= collections.defaultdict(dict)
     with open(filename, 'r') as input_file:
-        for line in input_file
-        land,underling_name,underling_type,grist = line.split(",")
-        #pass over empty or irrelevant lines in the input file
-        if land == '0' and grist == '0':
-            pass
-        elif underling_type not in Underling.__subclasses():
-            #report error
-            print ("Invalid underling type. Please correct input file and try again.")
-##        elif grist not in Underling.gristList:
-##            #report error
-        else:
-            level
-            
+        for line in input_file:
+            land,underling_name,underling_type,grist = line.split(",")
+            #ensure input strings are properly formatted
+            land=land.strip().upper()
+            underling_name=underling_name.strip().capitalize()
+            underling_type=underling_type.strip().capitalize()            
+            #pass over empty or irrelevant lines in the input file
+            if land == '0' and grist.strip()== '0':
+                pass
+            elif underling_type not in Underling.types():
+                raise ValueError( underling_type+" not a valid subclass of underling.")
+            else:
+                level=eval(underling_type).level
+                gristTypes=grist.split('/')
+                for i in range(0,len(gristTypes)):
+                    gristTypes[i]=gristTypes[i].lower().strip()
+                    if gristTypes[i] not in Underling.gristList:
+                        raise ValueError (grist+" not found in gristList.")
+                encounter_table[land][underling_name+' '+underling_type]= {'name':underling_name, 'level':level,'type': underling_type, 'grist': gristTypes}
+    return encounter_table
 
 def main():
-    landList=('LOFAC','LORAM','LOPAB','LODAF','LOSAS','LOWAW','DERSE')
-    underlingTypes=Underling.__subclasses__()
+    input_filename = 'underling_encounter_table.csv'
+    encounterTable = makeEncounterTable(input_filename)
+    landList= encounterTable.keys()
+    underlingTypes=Underling.types()
 
     def buildEncounter(land,totalHd=0,maxHd=0):
         while not str(totalHd).idigit():
@@ -920,8 +963,12 @@ def main():
             #tables
             verifyLand=True
             break
+        elif land == "DERSE":
+            #tables
+            verifyLand=True
+            break
         elif land == 'O':
-            print (landList)
+            print (landList+" or DERSE")
         elif land == 'Q':
             print('quiting... \n')
             return

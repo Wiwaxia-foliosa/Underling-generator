@@ -3,8 +3,8 @@ LOPAB,batting,imp,cotton
 LOPAB,denim,imp,indigo
 LOPAB,brass,ogre,copper
 LOPAB,tweed,ogre,wool
-LOPAB,cotton,basilisk,cotton
-LOPAB,lace,basilisk,linen/ cotton
+LOPAB,cotton,basilisk_lesser,cotton
+LOPAB,lace,basilisk_greater,linen/ cotton
 LOPAB,velveteen,lich,plush/velvet
 LOPAB,chiffon,harpy,cotton
 LOPAB,wool,gristmoss,wool
@@ -32,14 +32,14 @@ LOPAB,velvet,titachnid,velvet
 LOPAB,satin,linnorm,silk
 LOPAB,damask,behemoth,linen
 LOPAB,oilskin,leviathan,wax/ cotton/ vinyl
-LOPAB,silk,lich queen,silk
+LOPAB,silk,lich_queen,silk
 LODAF,dust,imp,dust
 LODAF,loam,imp,loam
 LODAF,ash,imp,ash
 LODAF,sandstone,ogre,sandstone
 LODAF,dirt,ogre,dust/ loam
-LODAF,silt,basilisk,dust
-LODAF,pebble,basilisk,cobble
+LODAF,silt,basilisk_lesser,dust
+LODAF,pebble,basilisk_greater,cobble
 LODAF,clay,lich,clay
 LODAF,dust,harpy,dust
 LODAF,dust,gristmoss,dust
@@ -67,14 +67,14 @@ LODAF,chernozem,titachnid,humus
 LODAF,litharenite,linnorm,sandstone/ quartz/ cobble
 LODAF,tuff,behemoth,ash/ quartz
 LODAF,alluvium,leviathan,loam
-LODAF,opal,lich queen,opal
+LODAF,opal,lich_queen,opal
 LOWAW,cobalt,imp,cobalt
 LOWAW,woad,imp,woad
 LOWAW,copper,imp,copper
 LOWAW,woad,ogre,woad
 LOWAW,indigo,ogre,indigo
-LOWAW,glass,basilisk,glass/cobalt
-LOWAW,indigo,basilisk,indigo
+LOWAW,glass,basilisk_lesser,glass/cobalt
+LOWAW,indigo,basilisk_greater,indigo
 LOWAW,cobalt,lich,cobalt
 LOWAW,pthalo,harpy,ink
 LOWAW,cobalt,gristmoss,cobalt
@@ -102,14 +102,14 @@ LOWAW,chalchuite,titachnid,turquoise
 LOWAW,celadon,linnorm,clay
 LOWAW,verditer,behemoth,azurite
 LOWAW,ewage,leviathan,opal
-LOWAW,ultramarine,lich queen,ultramarine
+LOWAW,ultramarine,lich_queen,ultramarine
 LOFAC,hardwood,imp,mahogany
 LOFAC,ebony,imp,ebony
 LOFAC,dust,imp,dust
 LOFAC,timber,ogre,mahogany
 LOFAC,ash,ogre,ash
-LOFAC,thorn,basilisk,rosewood
-LOFAC,potash,basilisk,phosphorus/ ash
+LOFAC,thorn,basilisk_lesser,rosewood
+LOFAC,potash,basilisk_greater,phosphorus/ ash
 LOFAC,wax,lich,wax
 LOFAC,madiera,harpy,mahogany
 LOFAC,ebony,gristmoss,ebony
@@ -137,14 +137,14 @@ LOFAC,redwood,titachnid,redwood
 LOFAC,agarwood,linnorm,rosewood
 LOFAC,redwood,behemoth,redwood
 LOFAC,ambergris,leviathan,wax
-LOFAC,fiddleback,lich queen,fiddleback
+LOFAC,fiddleback,lich_queen,fiddleback
 LORAM,amber,imp,amber
 LORAM,copper,imp,copper
 LORAM,rust,imp,rust
 LORAM,resin,ogre,amber
 LORAM,isatis,ogre,woad
-LORAM,glass,basilisk,glass
-LORAM,vinyl,basilisk,vinyl
+LORAM,glass,basilisk_lesser,glass
+LORAM,vinyl,basilisk_greater,vinyl
 LORAM,magnetite,lich,magnetite
 LORAM,cobalt,harpy,cobalt
 LORAM,copper,gristmoss,copper
@@ -172,14 +172,14 @@ LORAM,silver,titachnid,silver
 LORAM,silk,linnorm,silk
 LORAM,ferrofluid,behemoth,ferrofluid
 LORAM,phonograph,leviathan,vinyl
-LORAM,ferrofluid,lich queen,ferrofluid
+LORAM,ferrofluid,lich_queen,ferrofluid
 LOSAS,bismuth,imp,bismuth
 LOSAS,phosphorus,imp,phosphorus
 LOSAS,canvas,imp,linen
 LOSAS,rust,ogre,rust
 LOSAS,magnetite,ogre,magnetite
-LOSAS,bauxite,basilisk,aluminum/ clay
-LOSAS,tinglass,basilisk,bismuth
+LOSAS,bauxite,basilisk_lesser,aluminum/ clay
+LOSAS,tinglass,basilisk_greater,bismuth
 LOSAS,ink,lich,ink
 LOSAS,aluminum,harpy,aluminum
 LOSAS,phosphorus,gristmoss,phosphorus
@@ -207,7 +207,7 @@ LOSAS,argent,titachnid,silver
 LOSAS,ceruluean,linnorm,azurite
 LOSAS,kaolin,behemoth,clay/ aluminum
 LOSAS,corundum,leviathan,aluminum
-LOSAS,fulgurite,lich queen,fulgurite
+LOSAS,fulgurite,lich_queen,fulgurite
 0,0,0,0
 0,0,0,0
 0,0,0,0
