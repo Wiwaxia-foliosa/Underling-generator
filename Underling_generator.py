@@ -651,6 +651,7 @@ class Imp(Underling):
     #Imps have 1 HD
     level=1
     #Imps have 1d4 HP per HD by mass
+    hd='1d4'
     def rollHd(self):
         return random.randint(1,4)
     def fillStats(self):
@@ -671,6 +672,7 @@ class Ogre(Underling):
     #Ogres have 2 HD
     level=2
     #Ogres have 1d10 HP per HD by mass
+    hd='1d10'
     def rollHd(self):
         return random.randint(1,10)
     def fillStats(self):
@@ -691,6 +693,7 @@ class Basilisk_lesser(Underling):
     #basilisks have 3 HD
     level=3
     #lesser basilisks have 1d6+1d4 HP per HD by mass
+    hd='1d6+1d4'
     def rollHd(self):
         return random.randint(1,6)+random.randint(1,4)
     def fillStats(self):
@@ -713,6 +716,7 @@ class Basilisk_greater(Underling):
     #basilisks have 3 HD
     level=3
     #greater basilisks have 2d6 HP per HD by mass
+    hd='2d6'
     def rollHd(self):
         return random.randint(1,6)+random.randint(1,6)
     def fillStats(self):
@@ -732,7 +736,10 @@ class Basilisk_greater(Underling):
 
 class Gristmoss(Underling):
     name='Gristmoss'
+    #actual number of HD is determined randomly in fillStats
+    level=3
     #gristmoss has 1d4 HP per HD by mass
+    hd='1d4'
     def rollHd(self):
         return random.randint(1,4)
     #gristmoss does not benefit from the effects of prototyping
@@ -875,6 +882,24 @@ class Giclops(Underling):
 ##class Lich_Queen(Underling):
 ##    #gristworth 500k
     
+def makeEncounterTable(filename):
+    import collections
+    encounter_table= collections.defaultdict(dict)
+    with open(filename, 'r') as input_file:
+        for line in input_file
+        land,underling_name,underling_type,grist = line.split(",")
+        #pass over empty or irrelevant lines in the input file
+        if land == '0' and grist == '0':
+            pass
+        elif underling_type not in Underling.__subclasses():
+            #report error
+            print ("Invalid underling type. Please correct input file and try again.")
+##        elif grist not in Underling.gristList:
+##            #report error
+        else:
+            level
+            
+
 def main():
     landList=('LOFAC','LORAM','LOPAB','LODAF','LOSAS','LOWAW','DERSE')
     underlingTypes=Underling.__subclasses__()
