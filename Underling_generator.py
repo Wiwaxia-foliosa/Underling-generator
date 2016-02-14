@@ -435,10 +435,15 @@ class Underling:
 
     def dropGrist(self, gristType, otherGrists):
         nativeGrists=['build',gristType]
-        if otherGrists and (type(otherGrists) is str or type (otherGrists) is list):
-            if type(otherGrists)is str:
-                otherGrists=[otherGrists]
-            nativeGrists=nativeGrists+otherGrists
+        if otherGrists:
+            try:
+               nativeGrists=nativeGrists+otherGrists
+            except TypeError:
+                if type(otherGrists)is str:
+                    otherGrists=[otherGrists]
+                else:
+                    otherGrists=list(otherGrists)
+                nativeGrists=nativeGrists+otherGrists
 
         print (nativeGrists)
     
@@ -603,14 +608,14 @@ class Underling:
         for each in self.attacks:
             file.write('({})'.format(each))
         if self.spells != []:
-            print('\nSpells: ', end='')
+            file.write('\nSpells: ')
             for each in self.spells:
-                print('- '+each, end='\n         ')
+                file.write('- {}\n         '.format(each))
         file.write('\nSpecial: ')
         for each in self.special:
-            print('- '+each, end='\n         ')
+            file.write('- {}\n         '.format(each))
         if self.prototypedWith != set():
-            file.write('\nPrototypings:'.format(self.prototypedWith))
+            file.write('\nPrototypings: {}\n'.format(self.prototypedWith))
         file.write('Tactics: - {}'.format(self.tactics))
         file.write('\nDrops: {}'.format( self.loot))
         file.write('\n\n\n')
@@ -665,8 +670,8 @@ class Underling:
         self.getGrist(gristType)
         self.dropGrist(gristType, alsoDrops)
         self.sortTactics()
-        #move this call to main once troubleshooting is done
-        self.printout(sys.stdout)
+##        #move this call to main once troubleshooting is done
+##        self.printout(sys.stdout)
         
 class Imp(Underling):
     name='Imp'
@@ -1005,12 +1010,12 @@ def rollEncounterTable(table,land,key,value):
 def buildEncounter(table,land,totalHd=0,maxHd=0):
     #input and error checking
     if type(totalHd) is not int or totalHd <= 0:
-        totalHd=getInt(totalHd,"What is the total level or HD of the encounter?",'Please enter a positive integer value',1,100)
+        totalHd=getInt(totalHd,"What is the total level or HD of the encounter?",'Please enter a positive integer value',0,100)
     #quit this function if getInt was quit
     if totalHd==None:
         return
     if type(maxHd) is not int or maxHd <= 0:
-        maxHd=getInt(maxHd,"What is the maximum level or HD of any single Underling?",'Please enter a positive integer value',1)
+        maxHd=getInt(maxHd,"What is the maximum level or HD of any single Underling?",'Please enter a positive integer value')
     #quit this function if getInt was quit
     if maxHd==None:
         return
@@ -1063,35 +1068,42 @@ def main():
         else:
             print ('Unrecognized')
         
-    whatUnderling= input("what kind of underling? enter 'r' for a random assortment.\n press 'o' for a list of options or 'q' to quit\n > ").strip().capitalize()
-    if whatUnderling=='Random' or whatUnderling=='R':
-        encounter=buildEncounter(encounterTable,land)
-    else:
-        while whatUnderling not in underlingTypes:
-            if whatUnderling in underlingTypes:
-                 break
-            if whatUnderling == 'O':
-                print (underlingTypes)
-            elif whatUnderling == 'Q':
-                print ('quitting... \n')
-                return
-            else:
-                print ('Unrecognized')
-            whatUnderling= input("what kind of underling?\n press 'o' for a list of options or 'q' to quit\n > ").strip().capitalize()
+    whatUnderling=''    
+    
+    while whatUnderling not in underlingTypes:
+        whatUnderling= input("what kind of underling? enter 'r' for a random assortment.\n press 'o' for a list of options or 'q' to quit\n > ").strip().capitalize()
+        if whatUnderling=='Random' or whatUnderling=='R':
+            encounter=buildEncounter(encounterTable,land)
+            break
+        if whatUnderling in underlingTypes:
+            count=input('How many? \n > ')
+            count=getInt(count,'How many Underlings?','Please enter a positive integer below 100',minimum=1,maximum=100)
+
+            while count:
+                encounter.append(rollEncounterTable(encounterTable,land,"type",whatUnderling))
+                count-=1
+            break
+        if whatUnderling == 'O':
+            print (underlingTypes)
+        elif whatUnderling == 'Q':
+            print ('quitting... \n')
+            return
+        else:
+            print ('Unrecognized')
+            
             
     
-        count=input('How many? \n > ')
-        count=getInt(count,'How many Underlings?','Please enter a positive integer below 100',minimum=1,maximum=100)
 
-        while count:
-            encounter.append(rollEncounterTable(encounterTable,land,"type",whatUnderling))
-            count-=1
 
     file=sys.stdout
     output = input('Where should the results be printed? \n Press \'e\' to print to Encounter.txt, \'o\' to print elsewhere, or any other key to print to the shell.\n').strip().capitalize()
     if output=='E':
         file=open('Encounter.txt',mode='w')
-    
+    elif output=='O':
+        filename=input('Write name of file: >')
+        if filename[-4:]!='.txt':
+            filename=filename+'.txt'
+        file=open(filename, mode='w')
 
     for each in encounter:
         underling_type=eval(each['type'])
@@ -1101,5 +1113,5 @@ def main():
         make=underling_type(name,grist,alsoDrops)#,prototyping)
         make.printout(file)
         
-import sys
-sys.stdout.write('it ran')
+
+main()
