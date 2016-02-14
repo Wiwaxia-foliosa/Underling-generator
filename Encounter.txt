@@ -1,0 +1,76 @@
+Chiffon Harpy
+Speed: 10m/round   Size: 1m
+Defenses: 6 HP  [15,0]  Saves:(5f/15r/7w)
+Attacks: (1 flyby (move action), +1, 1d6)(2 claws/1 bite/2 wings, +2/+1(+1 per claw hit)/+5, 1d6/1d6/1d4)
+Special: 
+Prototypings:Tactics: - Uses surroundings intelligently, sets traps and ambushes, deduces PC strategy and defenses from how they respond to attacks.
+         - Never retreats unless magically compelled and always seeks to damage, with no regard to its survival.
+Drops: ['119 cotton grist', '420 build grist', 'healing gel for 1d6', '58 cotton grist']
+
+
+Chiffon Harpy
+Speed: 10m/round   Size: 1m
+Defenses: 7 HP  [15,0]  Saves:(5f/15r/7w)
+Attacks: (1 flyby (move action), +1, 1d6)(2 claws/1 bite/2 wings, +2/+1(+1 per claw hit)/+5, 1d6/1d6/1d4)
+Special: 
+Prototypings:Tactics: - Attack closest enemies or enemies that most recently attacked them. Like to bunch up and try to avoid entering chokepoints.
+           Will not pursue fleeing enemies unless very confident.
+           Do not ambush; generally mill around, destroy surroundings or wander aimlessly if not engaged.
+         - Never retreats unless magically compelled and always seeks to damage, with no regard to its survival.
+Drops: ['398 build grist', '116 cotton grist', '69 cotton grist', '12 plush grist', '54 build grist', '168 build grist', '53 cotton grist']
+
+
+Brass Ogre
+Speed: 4m/round   Size: 3m diameter round
+Defenses: 10 HP  [9,1]  Saves:(13f/5r/5w)
+Attacks: (1 hit, -1, 1d12)(1 bite, +0, 1d4)
+Special: 
+Prototypings:Tactics: - Attack closest enemies or enemies that most recently attacked them. Like to bunch up and try to avoid entering chokepoints.
+           Will not pursue fleeing enemies unless very confident.
+           Do not ambush; generally mill around, destroy surroundings or wander aimlessly if not engaged.
+Drops: ['6 build grist', '42 copper grist', '44 amber grist', '11 glass grist']
+
+
+Cotton Basilisk
+Speed: 6m/round   Size: 3m line
+Defenses: 16 HP  [12,0]  Saves:(10f/10r/10w)
+Attacks: (1 bite, +1, 1d8)
+Special: 
+Prototypings:Tactics: - Attack closest enemies or enemies that most recently attacked them. Like to bunch up and try to avoid entering chokepoints.
+           Will not pursue fleeing enemies unless very confident.
+           Do not ambush; generally mill around, destroy surroundings or wander aimlessly if not engaged.
+         - Never retreats unless magically compelled and always seeks to damage, with no regard to its survival.
+Drops: ['143 cotton grist', '414 build grist']
+
+
+Chiffon Harpy
+Speed: 10m/round   Size: 1m
+Defenses: 7 HP  [15,0]  Saves:(5f/15r/7w)
+Attacks: (1 flyby (move action), +1, 1d6)(2 claws/1 bite/2 wings, +2/+1(+1 per claw hit)/+5, 1d6/1d6/1d4)(1 bite, +2, 4d2)
+Special: 
+Prototypings:Tactics: - Follows or waits to ambush. Attacks the weakest looking target. Tries to grapple and bring them down while avoiding damage.
+           Flees if damaged or threatened.
+Drops: ['162 plush grist', '24 plush grist', '54 cotton grist']
+
+
+Brass Ogre
+Speed: 4m/round   Size: 3m diameter round
+Defenses: 6 HP  [9,1]  Saves:(13f/5r/5w)
+Attacks: (1 hit, -1, 1d12)(1 bite, +1, 2d2)
+Special: 
+Prototypings:Tactics: - Follows or waits to ambush. Attacks the weakest looking target. Tries to grapple and bring them down while avoiding damage.
+           Flees if damaged or threatened.
+Drops: ['2 magnetite grist', '100 build grist', '36 build grist']
+
+
+Batting Imp
+Speed: 4m/round   Size: 1m
+Defenses: 2 HP  [10,0]  Saves:(5f/5r/5w)
+Attacks: (1 jab, +0, 1d4)(1 bite, +0, 1d4)
+Special: 
+Prototypings:Tactics: - Attack closest enemies or enemies that most recently attacked them. Like to bunch up and try to avoid entering chokepoints.
+           Will not pursue fleeing enemies unless very confident.
+           Do not ambush; generally mill around, destroy surroundings or wander aimlessly if not engaged.
+Drops: ['6 build grist', '5 cotton grist', '4 build grist']
+
+

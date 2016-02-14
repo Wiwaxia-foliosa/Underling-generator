@@ -18,12 +18,16 @@
 
 #we gonna be rolling a lot of virtual dice here
 import random
+#for printing purposes
+import sys
 
 class Underling:
     name = 'Underling'
     level=0
     #for printout purposes. ensure that this matches rollHd in subclasses
     hd='0d0'
+    #minimum number of a type that can show up at once. should usually be 1
+    numberOccurring=1
     gristList = ('plush','dust','cobalt','mahogany','amber','bismuth',
                  'cotton','loam','indigo','ebony','copper','phosphorus',
                  'wool','sandstone','woad','ash','glass','rust',
@@ -431,8 +435,13 @@ class Underling:
 
     def dropGrist(self, gristType, otherGrists):
         nativeGrists=['build',gristType]
-        if type(otherGrists) is str or type (otherGrists) is list:
-            nativeGrists.append(otherGrists)
+        if otherGrists and (type(otherGrists) is str or type (otherGrists) is list):
+            if type(otherGrists)is str:
+                otherGrists=[otherGrists]
+            nativeGrists=nativeGrists+otherGrists
+
+        print (nativeGrists)
+    
         scaleFactor=round(self.dropWorth/10)
         drops=0
         #randomly vary exact size of dropWorth
@@ -586,24 +595,25 @@ class Underling:
                 self.tactics+='\n         - Never retreats unless magically compelled and always seeks to damage, with no regard to its survival.'
 
             
-    def printout(self):
-        print(self.adj.capitalize() + ' ' + self.name.capitalize()+'\n')
-        print('Speed: ',self.speed, 'm/round','   Size: ',self.size, sep='')
-        print('Defenses: '+str(self.hp)+' HP'+'  ['+str(self.defence)+',+'+str(self.protection)+'] '+' Saves:('+str(self.fortSave)+'f/'+str(self.refSave)+'r/'+str(self.willSave)+'w)')
-        print('Attacks: ', end='')
+    def printout(self,file):
+        file.write('{} {}\n'.format(self.adj.capitalize(),self.name.capitalize()))
+        file.write('Speed: {}m/round   Size: {}\n'.format(self.speed,self.size))
+        file.write('Defenses: {} HP  [{},{}]  Saves:({}f/{}r/{}w)\n'.format(self.hp,self.defence,self.protection,self.fortSave,self.refSave,self.willSave))
+        file.write('Attacks: ')
         for each in self.attacks:
-            print('('+each+')', end=' ')
+            file.write('({})'.format(each))
         if self.spells != []:
             print('\nSpells: ', end='')
             for each in self.spells:
                 print('- '+each, end='\n         ')
-        print('\nSpecial: ', end='')
+        file.write('\nSpecial: ')
         for each in self.special:
             print('- '+each, end='\n         ')
         if self.prototypedWith != set():
-            print('\nPrototypings:',self.prototypedWith)
-        print('Tactics: -',self.tactics)
-        print('\nDrops:', self.loot)
+            file.write('\nPrototypings:'.format(self.prototypedWith))
+        file.write('Tactics: - {}'.format(self.tactics))
+        file.write('\nDrops: {}'.format( self.loot))
+        file.write('\n\n\n')
 
     def __init__(self, descriptor, gristType, alsoDrops=None, prototyping=''):
         #create instance-specific stat variables
@@ -656,7 +666,7 @@ class Underling:
         self.dropGrist(gristType, alsoDrops)
         self.sortTactics()
         #move this call to main once troubleshooting is done
-        self.printout()
+        self.printout(sys.stdout)
         
 class Imp(Underling):
     name='Imp'
@@ -913,9 +923,47 @@ class Behemoth(Underling):
     pass
 
 class Lich_queen(Underling):
-    pass
+    level=13
 ##    #gristworth 500k
-    
+
+def getInt(input_string,prompt_message,error_message="Please enter an integer value in the appropriate range",minimum=0,maximum=None,reprompt=True):
+    value=None
+    #allow 'no maximum value' as default
+    def inRange(arg):
+        try:
+            bool_result = minimum<arg<maximum
+        except TypeError:
+            bool_result = minimum<arg
+        return bool_result
+
+    #continue to query user for input until told to quit or given a valid value
+    if reprompt:
+        try:
+            value=int(input_string)
+        except ValueError:
+            value=None
+        except TypeError:
+            value=None
+
+        while not type(value) is int or not inRange(value):
+            #report error
+            print (error_message)
+            #prompt for new input string
+            input_string=input(prompt_message+"\n'q' to quit\n > ").strip().lower()
+            if input_string == 'q':
+                print('quitting... \n')
+                return
+            elif input_string.isdigit():
+                value = int(input_string)
+
+    #just raise an exception if given an invalid value    
+    else:
+        if inRange(int(input_string)):
+            value = int(input_string)
+        else:
+            raise ValueError ("Converted value is outside specified range")
+    return value
+           
 def makeEncounterTable(filename):
     import collections
     encounter_table= collections.defaultdict(dict)
@@ -941,82 +989,117 @@ def makeEncounterTable(filename):
                 encounter_table[land][underling_name+' '+underling_type]= {'name':underling_name, 'level':level,'type': underling_type, 'grist': gristTypes}
     return encounter_table
 
+def rollEncounterTable(table,land,key,value):
+    if land=="DERSE":
+        landList= []
+        for each in table.keys():
+            landList.append(each)
+        land=landList[random.randint(0,len(landList)-1)]
+        
+    possible_results=[]
+    for each in table[land]:
+        if table[land][each][key]==value:
+            possible_results.append(table[land][each])
+    return possible_results[random.randint(0,len(possible_results)-1)]
+
+def buildEncounter(table,land,totalHd=0,maxHd=0):
+    #input and error checking
+    if type(totalHd) is not int or totalHd <= 0:
+        totalHd=getInt(totalHd,"What is the total level or HD of the encounter?",'Please enter a positive integer value',1,100)
+    #quit this function if getInt was quit
+    if totalHd==None:
+        return
+    if type(maxHd) is not int or maxHd <= 0:
+        maxHd=getInt(maxHd,"What is the maximum level or HD of any single Underling?",'Please enter a positive integer value',1)
+    #quit this function if getInt was quit
+    if maxHd==None:
+        return
+    #ensure that the maximum possible hd does not exceed the highest level of availiable Underling
+    levelCap=0
+    for each in Underling.__subclasses__():
+        if each.level > levelCap:
+            levelCap=each.level
+    maxHd=min(levelCap,int(maxHd))
+
+    encounter_list=[]
+    while totalHd>0:
+        grabHd=random.randint(1,min(totalHd,maxHd))
+        result=rollEncounterTable(table,land,"level",grabHd)
+        number=eval(result['type']).numberOccurring
+        if number-1>encounter_list.count(result):
+            grabHd=grabHd*number
+            result=[result]
+            for i in range(number-1):
+                result.append(result[0])
+        #ensure that the produced underlings do not overbudget totalHd
+        if totalHd-grabHd>=0:
+            totalHd-=grabHd
+            encounter_list.append(result)
+        
+    return encounter_list
+
+
 def main():
     input_filename = 'underling_encounter_table.csv'
     encounterTable = makeEncounterTable(input_filename)
-    landList= encounterTable.keys()
+    landList= []
+    for each in encounterTable.keys():
+        landList.append(each)
     underlingTypes=Underling.types()
+    encounter=[]
 
-    def buildEncounter(land,totalHd=0,maxHd=0):
-        while not str(totalHd).idigit():
-            #get total hd
-            pass
-        while not str(maxHd).isdigit():
-            #get max
-            pass
-        
-
-    land = input("What land?\npress 'o' for a list of options or 'q' to quit\n > ").strip().upper()
-    verifyLand= land in landList
-    while not verifyLand:
+    land=0
+    while land not in landList:
+        land = input("What land?\npress 'o' for a list of options or 'q' to quit\n > ").strip().upper()
         if land in landList:
-            #tables
-            verifyLand=True
-            break
+            pass
         elif land == "DERSE":
-            #tables
-            verifyLand=True
             break
         elif land == 'O':
-            print (landList+" or DERSE")
+            print (landList+["DERSE"])
         elif land == 'Q':
             print('quiting... \n')
             return
         else:
             print ('Unrecognized')
-        land = input("\nWhat land?\npress 'r' for a list of options or 'q' to quit\n > ").strip().upper()
         
-    whatUnderling= input("what kind of underling? enter 'random' for a random assortment.\n press 'o' for a list of options or 'q' to quit\n > ").strip().capitalize()
+    whatUnderling= input("what kind of underling? enter 'r' for a random assortment.\n press 'o' for a list of options or 'q' to quit\n > ").strip().capitalize()
     if whatUnderling=='Random' or whatUnderling=='R':
-        buildEncounter(land)
+        encounter=buildEncounter(encounterTable,land)
     else:
-        verifyUnderling=False
-        while not verifyUnderling:
-            for each in underlingTypes:
-                if whatUnderling in str(each):
-                    verifyUnderling=True
-                    break
+        while whatUnderling not in underlingTypes:
+            if whatUnderling in underlingTypes:
+                 break
             if whatUnderling == 'O':
                 print (underlingTypes)
             elif whatUnderling == 'Q':
                 print ('quitting... \n')
                 return
-            elif verifyUnderling==True:
-                break
             else:
                 print ('Unrecognized')
-            whatUnderling= input("what kind of underling?\n press 'r' for a list of options or 'q' to quit\n > ").strip().capitalize()
+            whatUnderling= input("what kind of underling?\n press 'o' for a list of options or 'q' to quit\n > ").strip().capitalize()
+            
     
-    count=input('How many? \n > ')
-    while not count.isdigit() or int(count)>100:
-        if count.strip().upper() == 'Q':
-            print ('quitting... \n')
-            return
-        elif count.isdigit():
-            print ('Hell no. A reasonable number, please.')
-        else:
-            print ('Please enter an integer value, or press \'q\' to quit')
-        count=input('How many Underlings? \n > ')
+        count=input('How many? \n > ')
+        count=getInt(count,'How many Underlings?','Please enter a positive integer below 100',minimum=1,maximum=100)
 
-    
-    output = input('Where should the results be printed? \n Press \'e\' to print to Encounter.txt, \'o\' to print elsewhere, or any other key to print to the shell.\n')
+        while count:
+            encounter.append(rollEncounterTable(encounterTable,land,"type",whatUnderling))
+            count-=1
 
-    count=int(count)
-    while count:
-        make=eval(whatUnderling)
-        make(decriptor,grist)
-        make.printout()
-        count-=1
+    file=sys.stdout
+    output = input('Where should the results be printed? \n Press \'e\' to print to Encounter.txt, \'o\' to print elsewhere, or any other key to print to the shell.\n').strip().capitalize()
+    if output=='E':
+        file=open('Encounter.txt',mode='w')
     
 
-print('it ran')
+    for each in encounter:
+        underling_type=eval(each['type'])
+        name=each['name']
+        grist = each['grist'][0]
+        alsoDrops=each['grist'][1:]
+        make=underling_type(name,grist,alsoDrops)#,prototyping)
+        make.printout(file)
+        
+import sys
+sys.stdout.write('it ran')
