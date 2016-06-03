@@ -17,7 +17,35 @@
 from Underling_types import *
 import random
 import sys
-        
+
+# EDIT THIS
+#
+#
+def environmentEdit(encounter, land):       
+    ocean= input ('Is the encounter in the oceans of the Land? y/n\n > ').strip().lower()
+    if ocean in ('y','yes','yep'):
+        #types of underlings that can always be found in the ocean
+        ocean_types = ('Hydra','Kraken','Giclops','Titachnid','Acheron','Leviathan','Lich_queen') 
+        #edit the generated results of encounter properly
+        for each in encounter:
+            if each['type'] not in ocean_types and each['grist']!='woad':
+##                    #default solution if no grists or prototypings confer ability to swim or float
+##                    each['type']=ocean_types[random.randint(1,len(ocean_types)-1)]
+                each['prototyping']='nessie_fins'
+                                   
+                if land == 'LOSAS':
+                    each['grist']=['aluminum']+each['grist']
+                    each['name']='emery'
+        else:
+            air= input ('Is the encounter in the skies of the Land? y/n\n > ').strip().lower()
+            if air in ('y','yes','yep'):
+                #types of underlings that can always be found in the sky
+                air_types = ('Harpy','Roc') 
+                #edit the generated results of encounter properly
+                for each in encounter:
+                    if each['type'] not in air_types:
+                        #default solution if no grists or prototypings confer ability to fly or float
+                        each['type']=air_types[random.randint(1,len(air_types)-1)]
 
 def getInt(input_string,prompt_message,error_message="Please enter an integer value in the appropriate range",minimum=0,maximum=None,reprompt=True):
     value=None
@@ -192,7 +220,7 @@ def main():
             print ('Unrecognized')
             
             
-    
+    environmentEdit(encounter,land)
 
 
     file=sys.stdout
@@ -210,7 +238,11 @@ def main():
         name=each['name']
         grist = each['grist'][0]
         alsoDrops=each['grist'][1:]
-        make=underling_type(name,grist,alsoDrops)#,prototyping)
+        if 'prototyping' in each.keys():
+            prototyping = each['prototyping']
+        else:
+            prototyping = ''
+        make=underling_type(name,grist,alsoDrops,prototyping)
         make.printout(file)
         
 

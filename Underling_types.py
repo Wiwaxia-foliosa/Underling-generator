@@ -76,7 +76,7 @@ class Ogre(Underling):
         self.willSave=5
         self.speed=4
         self.size='3m diameter round'
-        self.dropWorth=100
+        self.dropWorth=500
         self.attacks.append('1 hit, -1, 1d12')
         self.incidental(1)
 
@@ -97,7 +97,7 @@ class Basilisk_lesser(Underling):
         self.willSave=10
         self.speed=6
         self.size='3m line'
-        self.dropWorth=500
+        self.dropWorth=750
         self.attacks.append('1 bite, +1, 1d8')
         self.incidental(1)
         self.special.add('Grapples target if bite attack beats their defence by 5 or more.\n           If target is smaller, they are picked up in mouth.')
@@ -120,7 +120,7 @@ class Basilisk_greater(Underling):
         self.willSave=10
         self.speed=6
         self.size='5m line'
-        self.dropWorth=600
+        self.dropWorth=1000
         self.attacks.append('1 bite, +1, 1d8')
         self.incidental(2)
         self.special.add('Grapples target if bite attack beats their defence by 5 or more.\n           If target is smaller, they are picked up in mouth.')
@@ -160,6 +160,7 @@ class Lich(Underling):
     #liches have 4 HD
     level=4
     #liches have 1d6 HP per HD by mass
+    hd='1d6'
     def rollHd(self):
         return random.randint(1,6)
     def fillStats(self):
@@ -183,6 +184,7 @@ class Harpy(Underling):
     #harpies have 4 HD
     level=4
     #harpies have 1d2 HP per HD by mass
+    hd='1d2'
     def rollHd(self):
         return random.randint(1,2)
     def fillStats(self):
@@ -203,9 +205,10 @@ class Giclops(Underling):
     name='Giclops'
     #giclopses have 5 HD
     level=5
-    #giclopses have 1d8+1d10 HP per HD by mass
+    #giclopses have 2d10 HP per HD by mass
+    hd = '2d10'
     def rollHd (self):
-        return random.randint(1,8)+random.randint(1,10)
+        return random.randint(1,10)+random.randint(1,10)
     def fillStats (self):
         self.rollHp(self.level)
         self.defence=8
@@ -215,53 +218,93 @@ class Giclops(Underling):
         self.willSave=8
         self.speed=3
         self.size='5m diameter round'
-        self.dropWorth=1000
+        self.dropWorth=5000
         self.attacks.append('1 hit, +0, 2d8')
         self.attacks.append('1/2 crush (takes 2 rounds), -2, 2d20')
-        self.incidental(13)
+        self.incidental(16)
         self.special.add('Vulnerable [0] back, [-10] eye (def 17 from range)')
     
 class Barghest(Underling):
-    pass
-    #grist 750
+    name= 'Barghest'
+    # have 5 HD
+    level= 5
+    # have 1d8 HP per HD by mass
+    hd= '1d8'
+    def rollHd(self):
+        return random.randint(1,8)
+    numberOccuring=2
+    def fillStats(self):
+        self.rollHp(self.level)
+        self.defence= 13
+        self.protection= 0 
+        self.fortSave= 9
+        self.refSave= 14
+        self.willSave= 9
+        self.speed= 9
+        self.size= '1m'
+        self.dropWorth= 750
+        self.attacks.append('(1 bite, +3, 2d4 crits on natural 18+)')
+        self.attacks.append('(1 nip, +6, 1d2 and halt movement)')
+        self.special.add('Gets 1 free attack per round against opponents moving past or alongside it')
 
 class Semilich(Underling):
     pass
-    #grist 600
+##    name= Semilich
+##    # have 6 HD
+##    level= 6
+##    # have  HP per HD by mass
+##    hd= 
+##    def rollHd(self):
+##        return random.randint(1, 
+##    def fillStats(self):
+##        self.rollHp(self.level)
+##        self.defence= 
+##        self.protection= 
+##        self.fortSave= 
+##        self.refSave= 
+##        self.willSave= 
+##        self.speed= 
+##        self.size= 
+##        self.dropWorth= 
+##        self.attacks.append(
+##        self.incidental(#weight in pounds/1000)
+##        self.special.add(
+##        self.spells.append(
+##    #grist 1000
 
 class Hydra(Underling):
     pass
-    #grist 1100
+    #grist 3000
 
 class Bruticorn(Underling):
     pass
-    #grist 1500
+    #grist 5500
 
 class Archlich(Underling):
     pass
-    #grist 3000
+    #grist 8000
 
 class Formoriarm(Underling):
     pass
-    #grist 5k
+    #grist 10k
 
 class Horrorse(Underling):
     pass
 
 class Spawntinel(Underling):
     pass
-    #grist 4k
+    #grist 
 
 class Spectaterror(Underling):
     pass
-    #grist 10k
+    #grist 
 
 class Roc(Underling):
     pass
 
 class Gigalisk(Underling):
     pass
-    #grist 20k
+    #grist 
 
 class Beast(Underling):
     pass
@@ -294,4 +337,4 @@ class Behemoth(Underling):
 
 class Lich_queen(Underling):
     level=13
-##    #gristworth 500k
+##    #gristworth 1mil

@@ -16,6 +16,8 @@
 
 #we gonna be rolling a lot of virtual dice here
 import random
+#for default printout
+import sys
 
 class Underling:
     name = 'Underling'
@@ -128,13 +130,13 @@ class Underling:
     #EDIT THIS
     #
     def addPrototypeSpells(self,prototyping):
-        pass
+        if prototyping not in self.prototypingList:
+            prototyping= self.prototypingList[random.randint(0,len(self.prototypingList)-1)]
     
     #EDIT THIS
     #
     def prototype(self,prototyping=''):
         if prototyping not in self.prototypingList:
-            #IF YOU ARE EDITING ENSURE THAT THE RANGE OF THE RANDOM NUMBER GENERATED MATCHES THE LENGTH OF prototypingList
             prototyping= self.prototypingList[random.randint(0,len(self.prototypingList)-1)]
         if prototyping in self.prototypedWith:
             return
@@ -151,7 +153,7 @@ class Underling:
             #nessie fins --> can swim
             if prototyping == self.prototypingList[0]:
                 self.special.add('Swim speed')
-            #nessie long neck --> 
+            #nessie long neck --> can attack at reach
             elif prototyping == self.prototypingList[1]:
                 self.special.add('Can make bite atacks at an extra meter reach.')
                 self.attacks.append('1 bite, +'+str(self.baseAttk())+', '+self.basicDamage())
@@ -185,10 +187,10 @@ class Underling:
                 self.attacks.append('1 bite, +'+str(attk)+', '+str(self.level)+'d2')
                 self.special.add('Grapples target if bite attack beats their defence by 5 or more.\n           If target is smaller, they are picked up in mouth.')
                 self.tacticsBucket.add('ambush_predator')
-            #vine leaves -->
+            #vine leaves --> can heal if in water
             elif prototyping == self.prototypingList[8]:
                 self.special.add('Can heal '+self.basicDamage()+'+'+str(self.level)+' health as a standard action if standing or swimming in water.')
-            #vine tendrils -->
+            #vine tendrils --> can ensnare weapons
             elif prototyping == self.prototypingList[9]:
                 self.special.add('Attackers that miss by five or more get their weapon tangled in vines and overgrown. \n           They can pull it out next turn with a str check, then it is lost until the underling is defeated.')
             #onryou long stringy hair --> reappears in front of you if you try to flee, undead tactics
@@ -257,7 +259,7 @@ class Underling:
         #cobalt
         elif grist == self.gristList[2]:
             #gives bonus HP
-            self.hp+=(+1)*2
+            self.hp+=self.level*2+2//self.level
 
         #mahogany
         elif grist == self.gristList[3]:
@@ -276,7 +278,7 @@ class Underling:
 
         #cotton
         elif grist == self.gristList[6]:
-            print('fix')
+            self.special.add('Becomes immobilized if wet.')
             
         #loam
         elif grist == self.gristList[7]:
@@ -300,7 +302,8 @@ class Underling:
 
         #wool
         elif grist == self.gristList[12]:
-            self.special.add('Resist 5 to fire, water, cold.')
+##            self.special.add('Resist 5 to fire, water, cold.')
+            print('fix')
 
         #sandstone
         elif grist == self.gristList[13]:
@@ -316,7 +319,8 @@ class Underling:
 
         #ash
         elif grist == self.gristList[15]:
-            self.special.add('Healed by fire. Will attempt to ignite self and others.')
+##            self.special.add('Healed by fire. Will attempt to ignite self and others.')
+            print('fix')
 
         #glass
         elif grist == self.gristList[16]:
@@ -324,6 +328,8 @@ class Underling:
 
         #rust
         elif grist == self.gristList[17]:
+            #less resilient, deals ongoing damage
+            self.protection-=1
             self.special.add('Leaves a trail of rust as it walks. Attacks do '+str(self.basicDamage())+' ongoing damage (spindown, take # rolled in damage each time)')
 
 ##        #brass
@@ -336,7 +342,7 @@ class Underling:
 
         #clay
         elif grist == self.gristList[19]:
-            self.special.add('Can squeeze to fit through spaces as small as half their size.')
+            print('fix')
 
         #azurite
         elif grist == self.gristList[20]:
@@ -366,7 +372,8 @@ class Underling:
 
         #lamp-black
         elif grist == self.gristList[26]:
-            print('fix')
+            self.fortSave+=4
+            self.special.add('Immune to all elemental damage.')
 
         #rosewood
         elif grist == self.gristList[27]:
@@ -378,7 +385,7 @@ class Underling:
 
         #ink
         elif grist == self.gristList[29]:
-            print('fix')
+            self.attacks.append('1 inkblot , +'+str(self.baseAttk()+1)+', fort save or blinded 1d4 rounds. Range: 3m')  
 
         #velvet
         elif grist == self.gristList[30]:
@@ -596,7 +603,7 @@ class Underling:
                 self.tactics+='\n         - Never retreats unless magically compelled and always seeks to damage, with no regard to its survival.'
 
             
-    def printout(self,file):
+    def printout(self,file=sys.stdout):
         file.write('{} {}\n'.format(self.adj.capitalize(),self.name.capitalize()))
         file.write('Speed: {}m/round   Size: {}\n'.format(self.speed,self.size))
         file.write('Defenses: {} HP  [{},{}]  Saves:({}f/{}r/{}w)\n'.format(self.hp,self.defence,self.protection,self.fortSave,self.refSave,self.willSave))
