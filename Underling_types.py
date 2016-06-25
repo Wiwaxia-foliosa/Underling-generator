@@ -30,6 +30,7 @@
 ##        self.size= 
 ##        self.dropWorth= 
 ##        self.attacks.append(
+##        self.tactics=
 ##        self.incidental(#weight in pounds/1000)
 ##        self.special.add(
 ##        self.spells.append(
@@ -57,6 +58,7 @@ class Imp(Underling):
         self.size='1m'
         self.dropWorth=10
         self.attacks.append('1 jab, +0, 1d4')
+        self.tactics='mill around engaging in mischeif/petty vandalalism, only attack if approached, only work together accidentally, flee immmediately from anything that looks strong'
         #imps have no default spells or special abilities
 
 class Ogre(Underling):
@@ -79,6 +81,7 @@ class Ogre(Underling):
         self.dropWorth=500
         self.attacks.append('1 hit, -1, 1d12')
         self.incidental(1)
+        self.tactics='seek the high ground or important places and stay there, attack anything that approaches or is in the way, don\'t pursue'
 
 class Basilisk_lesser(Underling):
     name='Basilisk'
@@ -102,6 +105,8 @@ class Basilisk_lesser(Underling):
         self.incidental(1)
         self.special.add('Grapples target if bite attack beats their defence by 5 or more.\n           If target is smaller, they are picked up in mouth.')
         self.spells.append('Fire breath: cone 3d6 damage, -1 die per meter, ref save to jump 1m back.\n           Recharges on a 6 on d6.')
+        self.tactics='lie around or wander aimlessly, attack anything they stumble across, try to spread attacks and fire around, pursue but don\'t enter choke points'
+
 
 class Basilisk_greater(Underling):
     name='Basilisk'
@@ -125,6 +130,8 @@ class Basilisk_greater(Underling):
         self.incidental(2)
         self.special.add('Grapples target if bite attack beats their defence by 5 or more.\n           If target is smaller, they are picked up in mouth.')
         self.spells.append('Fire breath: cone 3d6 damage, -1 die per meter, ref save to jump 1m back.\n           Recharges on a 6 on d6.')
+        self.tactics='lie around or wander aimlessly, attack anything they stumble across, try to spread attacks and fire around, pursue but don\'t enter choke points'
+
 
 class Gristmoss(Underling):
     name='Gristmoss'
@@ -153,7 +160,7 @@ class Gristmoss(Underling):
         self.attacks.append('none')
         self.special.add('All adjacent enemies take 1d4 damage per level every turn, ignoring defence and protection.')
         self.special.add('Disguised as ordinary grist')
-        self.tacticsBucket.add('mindless')
+        self.tactics='mindless'
 
 class Lich(Underling):
     name='Lich'
@@ -178,6 +185,7 @@ class Lich(Underling):
         self.spells.append('Magic Missile: range 10m, hits automatically, deals 1d4 damage.\n           Recharges on a 4+ on d6.')
         self.loot.append('skull')
         self.special.add('Ressurects from skull in 1d6 turns unless skull is smashed.')
+        self.tactics='wait to attack until enemies are already weakened or engaged, attack from a distance, paralyze ranged attakers or anyone getting close'
 
 class Harpy(Underling):
     name='Harpy'
@@ -200,6 +208,7 @@ class Harpy(Underling):
         self.attacks.append('1 flyby (move action), +1, 1d6')
         self.attacks.append('2 claws/1 bite/2 wings, +2/+1(+1 per claw hit)/+5, 1d6/1d6/1d4')
         self.spells.append('Scream: 1/6 chance of attracting more Underlings (as per encounter table).\n            Recharges on 6 on d6.')
+        self.tactics='avoid damage, hit and run then circle back to follow at a safe distance, don\'t attack and just scream for help when wounded'
 
 class Giclops(Underling):
     name='Giclops'
@@ -246,6 +255,7 @@ class Barghest(Underling):
         self.attacks.append('(1 bite, +3, 2d4 crits on natural 18+)')
         self.attacks.append('(1 nip, +6, 1d2 and halt movement)')
         self.special.add('Gets 1 free attack per round against opponents moving past or alongside it')
+        self.tactics='work together to seperate out and take down the weakest, flee if wounded or if unsuccessful'
 
 class Semilich(Underling):
     pass

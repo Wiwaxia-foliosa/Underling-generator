@@ -93,20 +93,20 @@ class Underling:
             if self.level<=5:    
                 die='1d4'
             elif self.level<=9:
-                die=''
+                die='2d10'
             else:
-                die= ''
+                die= '3d8'
             return die
         else:
             if self.level<=5:    
                 dice=1
                 size=4
             elif self.level<=9:
-                dice=0
-                size=0
+                dice=1
+                size=10
             else:
-                dice=0
-                size=0
+                dice=3
+                size=8
             return dice,size
 
     def baseAttk(self):
@@ -265,7 +265,7 @@ class Underling:
         elif grist == self.gristList[3]:
             #bonus def, but flees in the face of flame
             self.defence+=1
-            self.special.add('Flees if it has a candle brandished at it or if it is damaged by fire')
+            self.special.add('Flees from flame')
 
         #amber
         elif grist == self.gristList[4]:
@@ -274,8 +274,9 @@ class Underling:
         
         #bismuth
         elif grist == self.gristList[5]:
-            self.special.add('Is pushed 1m away from any electric attack or discharge within 3m, before attack resolves')
-
+##            self.special.add('Is pushed 1m away from any electric attack or discharge within 3m, before attack resolves')
+            pass
+        
         #cotton
         elif grist == self.gristList[6]:
             self.special.add('Becomes immobilized if wet.')
@@ -393,8 +394,8 @@ class Underling:
 
         #humus
         elif grist == self.gristList[31]:
-            print('fix')
-
+            self.special.add("When killed, causes violent plant growth within "+str(auraSize())+"m until the area is overgrown and difficult to pass.") 
+            
         #turquoise
         elif grist == self.gristList[32]:
             print('fix')
@@ -587,6 +588,8 @@ class Underling:
             #if not mindless, smarter tactics take precedence over less smart
             if 'smart' in self.tacticsBucket:
                 self.tactics='Uses surroundings intelligently, sets traps and ambushes, deduces PC strategy and defenses from how they respond to attacks.'
+            elif 'undead' in self.tacticsBucket:
+                self.tactics+='\n         - Never retreats unless magically compelled and always seeks to damage, with no regard to its survival.'
             elif 'hit_and_run' in self.tacticsBucket:
                 self.tactics='Attempts to avoid damage by fleeing as far as possible between attacks, then rushing back in to attack and flee.\n           Flees if damaged or threatened.'
                 
@@ -596,12 +599,10 @@ class Underling:
             elif 'ambush_predator' in self.tacticsBucket:
                 self.tactics='Follows or waits to ambush. Attacks the weakest looking target. Tries to grapple and bring them down while avoiding damage.\n           Flees if damaged or threatened.'
             else:
-                #default Underling tactics
-                self.tactics='Attack closest enemies or enemies that most recently attacked them. Like to bunch up and try to avoid entering chokepoints.\n           Will not pursue fleeing enemies unless very confident.\n           Do not ambush; generally mill around, destroy surroundings or wander aimlessly if not engaged.'
+                #use default Underling tactics
+                pass
             #undead tactics modify tactics other than mindless, rather than overriding them
-            if 'undead' in self.tacticsBucket:
-                self.tactics+='\n         - Never retreats unless magically compelled and always seeks to damage, with no regard to its survival.'
-
+            
             
     def printout(self,file=sys.stdout):
         file.write('{} {}\n'.format(self.adj.capitalize(),self.name.capitalize()))
@@ -634,6 +635,8 @@ class Underling:
         self.willSave=0
         self.speed=0
         self.size=''
+        self.tactics='Attack closest enemies or enemies that most recently attacked them. Like to bunch up and try to avoid entering chokepoints.\n           Will not pursue fleeing enemies unless very confident.\n           Do not ambush; generally mill around, destroy surroundings or wander aimlessly if not engaged.'
+
         #controls grist and health drops
         self.dropWorth=0
         #controls if prototypings add spells
