@@ -1,5 +1,5 @@
 # If you want to add new Underling types/subclasses:
-#    - assign name and level appropriate values
+#    - assign name and level-appropriate stat values
 #    - override rollHd with the correct size of die/dice to roll for hp per level
 #    - override fillStats to assign the default values for your new Underling type to the fields created in __init__
 #    - if your new Underling type is prototyped abnormally, override callPrototyping
@@ -237,10 +237,10 @@ class Barghest(Underling):
     name= 'Barghest'
     # have 5 HD
     level= 5
-    # have 1d8 HP per HD by mass
-    hd= '1d8'
+    # have 1d6 HP per HD by mass
+    hd= '1d6'
     def rollHd(self):
-        return random.randint(1,8)
+        return random.randint(1,6)
     numberOccuring=2
     def fillStats(self):
         self.rollHp(self.level)

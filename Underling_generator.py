@@ -47,8 +47,8 @@ def environmentEdit(encounter, land):
                         #default solution if no grists or prototypings confer ability to fly or float
                         each['type']=air_types[random.randint(1,len(air_types)-1)]
 
-def getInt(input_string,prompt_message,error_message="Please enter an integer value in the appropriate range",minimum=0,maximum=None,reprompt=True):
-    value=None
+def getInt(value,prompt_message,error_message="Please enter an integer value in the appropriate range",minimum=0,maximum=None,reprompt=True):
+##    value=None
     #allow 'no maximum value' as default
     def inRange(arg):
         try:
@@ -59,28 +59,22 @@ def getInt(input_string,prompt_message,error_message="Please enter an integer va
 
     #continue to query user for input until told to quit or given a valid value
     if reprompt:
-        try:
-            value=int(input_string)
-        except ValueError:
-            value=None
-        except TypeError:
-            value=None
-
         while not type(value) is int or not inRange(value):
-            #report error
-            print (error_message)
-            #prompt for new input string
-            input_string=input(prompt_message+"\n'q' to quit\n > ").strip().lower()
-            if input_string == 'q':
+            if value == 'q':
                 print('quitting... \n')
                 return
-            elif input_string.isdigit():
-                value = int(input_string)
+            elif type(value) is str and value.isdigit():
+                value = int(value)
+            else:
+                print (error_message)
+                #prompt for new input string
+                value=input(prompt_message+"\n'q' to quit\n > ").strip().lower()
+            
 
     #just raise an exception if given an invalid value    
     else:
-        if inRange(int(input_string)):
-            value = int(input_string)
+        if inRange(int(value)):
+            value = int(value)
         else:
             raise ValueError ("Converted value is outside specified range")
     return value
@@ -137,11 +131,12 @@ def buildEncounter(table,land,totalHd=0,maxHd=0):
     if maxHd==None:
         return
     #ensure that the maximum possible hd does not exceed the highest level of availiable Underling
-    levelCap=0
-    for each in Underling.__subclasses__():
-        if each.level > levelCap:
-            levelCap=each.level
-    maxHd=min(levelCap,int(maxHd))
+##    levelCap=0
+##    for each in Underling.__subclasses__():
+##        if each.level > levelCap:
+##            levelCap=each.level
+##    maxHd=min(levelCap,int(maxHd))
+    maxHd=int(maxHd)
 
     encounter_list=[]
     #ensure that loop never runs forever
@@ -171,19 +166,17 @@ def buildEncounter(table,land,totalHd=0,maxHd=0):
 def main():
     input_filename = 'underling_encounter_table.csv'
     encounterTable = makeEncounterTable(input_filename)
-    landList= []
+    landList= ["DERSE"]
     for each in encounterTable.keys():
         landList.append(each)
     underlingTypes=Underling.types()
     encounter=[]
 
-    land=0
+    land=''
     while land not in landList:
         land = input("What land?\npress 'o' for a list of options or 'q' to quit\n > ").strip().upper()
         if land in landList:
             pass
-        elif land == "DERSE":
-            break
         elif land == 'O':
             print (landList+["DERSE"])
         elif land == 'Q':
@@ -199,25 +192,23 @@ def main():
         if whatUnderling=='Random' or whatUnderling=='R':
             encounter=buildEncounter(encounterTable,land)
             break
-        elif whatUnderling in underlingTypes:
-            count=input('How many? \n > ')
-            count=getInt(count,'How many Underlings?','Please enter a positive integer below 100',minimum=0,maximum=100)
-
-            while count:
-                encounter.append(rollEncounterTable(encounterTable,land,"type",whatUnderling))
-                count-=1
-            prompt=input("any other types of underling? y/n\n > ").lower().strip()
-            if prompt in ["y","yes","yep"]:
-                whatUnderling=''
-            else:
-                break
-        elif whatUnderling == 'O':
-            print (underlingTypes)
-        elif whatUnderling == 'Q':
-            print ('quitting... \n')
-            return
         else:
-            print ('Unrecognized')
+            if whatUnderling in underlingTypes:
+                count=input('How many? \n > ')
+                count=getInt(count,'How many Underlings?','Please enter a positive integer below 100',minimum=0,maximum=100)
+                while count:
+                    encounter.append(rollEncounterTable(encounterTable,land,"type",whatUnderling))
+                    count-=1
+                prompt=input("any other types of underling? y/n\n > ").lower().strip()
+                if prompt in ["y","yes","yep"]:
+                    whatUnderling=''
+            elif whatUnderling == 'O':
+                print (underlingTypes)
+            elif whatUnderling == 'Q':
+                print ('quitting... \n')
+                return
+            else:
+                print ('Unrecognized')
             
             
     environmentEdit(encounter,land)

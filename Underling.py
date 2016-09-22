@@ -136,11 +136,11 @@ class Underling:
     #EDIT THIS
     #
     def prototype(self,prototyping=''):
+        #prototyping variable will be defined in an if/else as random if !manual or user input if manual
+        #either way, test that protoyping is both valid and not done yet before moving on
         if prototyping not in self.prototypingList:
             prototyping= self.prototypingList[random.randint(0,len(self.prototypingList)-1)]
-        if prototyping in self.prototypedWith:
-            return
-        else:
+        if prototyping not in self.prototypedWith:
             #add to prototypedWith to prevent duplicate prototypings
             self.prototypedWith.add(prototyping)
 
@@ -225,6 +225,7 @@ class Underling:
         #50% chance of third prototyping, 25% chance of fourth, etc.
         prototypingLoopGovernor=random.randint(0,1)
         #keep exploding prototyping loop from running indefinitely
+        #adjust for number of prototypings possible!
         loopStop=10
         while prototypingLoopGovernor and loopStop:
             #add additional prototype
