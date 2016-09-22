@@ -1,0 +1,52 @@
+Canvas Imp
+Speed: 4m/round   Size: 1m
+Defenses: 4 HP  [10,0]  Saves:(5f/5r/5w)
+Attacks: (1 jab, +0, 1d4)(1 bite, +0, 1d4)
+Special: - Gets immediate free attack on opponents moving away.
+         - Can make bite atacks at an extra meter reach.
+         
+Prototypings: {'racoon_skull', 'nessie_neck'}
+Tactics: - Attack closest enemies or enemies that most recently attacked them. Like to bunch up and try to avoid entering chokepoints.
+           Will not pursue fleeing enemies unless very confident.
+           Do not ambush; generally mill around, destroy surroundings or wander aimlessly if not engaged.
+Drops: ['8 build grist', '6 build grist', '8 build grist', '2 linen grist', '2 build grist']
+
+
+Canvas Imp
+Speed: 4m/round   Size: 1m
+Defenses: 4 HP  [10,0]  Saves:(5f/5r/5w)
+Attacks: (1 jab, +0, 1d4)(1 bite, +0, 1d4)
+Special: - Can heal 1d4+1 health as a standard action if standing or swimming in water.
+         - Can shapeshift at will to appear as other underlings/creatures.
+           Size and shape changes, but stats do not (including hp and ability to grapple).
+         - Climb speed equal to normal speed, needs no checks to climb.
+         - Can make bite atacks at an extra meter reach.
+         
+Prototypings: {'racoon_paws', 'character_eyes', 'vine_leaves', 'nessie_neck'}
+Tactics: - Attack closest enemies or enemies that most recently attacked them. Like to bunch up and try to avoid entering chokepoints.
+           Will not pursue fleeing enemies unless very confident.
+           Do not ambush; generally mill around, destroy surroundings or wander aimlessly if not engaged.
+Drops: ['8 build grist', '8 build grist', '4 build grist', '2 linen grist']
+
+
+Ink Lich
+Speed: 5m/round   Size: 1m
+Defenses: 16 HP  [13,0]  Saves:(9f/12r/14w)
+Attacks: (1 touch, +1, fort save or paralyzed 1d4 rounds)
+Spells: - Magic Missile: range 10m, hits automatically, deals 1d4 damage.
+           Recharges on a 4+ on d6.
+         
+Special: - Attackers that miss by five or more get their weapon tangled in vines and overgrown. 
+           They can pull it out next turn with a str check, then it is lost until the underling is defeated.
+         - Ressurects from skull in 1d6 turns unless skull is smashed.
+         - All within 1 meters, friend and foe alike, take 1d4 damage on this Underling's turn.
+           The Fears of LOFAC and other underlings with an onryou prototyping are unaffected.
+         
+Prototypings: {'vine_tendrils', 'onryou_kimono'}
+Tactics: - Attack closest enemies or enemies that most recently attacked them. Like to bunch up and try to avoid entering chokepoints.
+           Will not pursue fleeing enemies unless very confident.
+           Do not ambush; generally mill around, destroy surroundings or wander aimlessly if not engaged.
+         - Never retreats unless magically compelled and always seeks to damage, with no regard to its survival.
+Drops: ['skull', 'healing gel for 4d4', '298 aluminum grist', '239 ink grist']
+
+
