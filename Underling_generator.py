@@ -36,16 +36,16 @@ def environmentEdit(encounter, land):
                 if land == 'LOSAS':
                     each['grist']=['aluminum']+each['grist']
                     each['name']='emery'
-        else:
-            air= input ('Is the encounter in the skies of the Land? y/n\n > ').strip().lower()
-            if air in ('y','yes','yep'):
-                #types of underlings that can always be found in the sky
-                air_types = ('Harpy','Roc') 
-                #edit the generated results of encounter properly
-                for each in encounter:
-                    if each['type'] not in air_types:
-                        #default solution if no grists or prototypings confer ability to fly or float
-                        each['type']=air_types[random.randint(1,len(air_types)-1)]
+    else:
+        air= input ('Is the encounter in the skies of the Land? y/n\n > ').strip().lower()
+        if air in ('y','yes','yep'):
+            #types of underlings that can always be found in the sky
+            air_types = ('Harpy','Roc') 
+            #edit the generated results of encounter properly
+            for each in encounter:
+                if each['type'] not in air_types:
+                    #default solution if no grists or prototypings confer ability to fly or float
+                    each['type']=air_types[random.randint(1,len(air_types)-1)]
 
 def getInt(value,prompt_message,error_message="Please enter an integer value in the appropriate range",minimum=0,maximum=None,reprompt=True):
 ##    value=None
