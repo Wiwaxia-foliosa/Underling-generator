@@ -154,6 +154,10 @@ class Underling:
         self.speed += integerFields(modifierObject.addSpeed,'addSpeed')
         self.dropWorth += integerFields(modifierObject.addDropWorth,'addDropWorth')
 
+##        def (self,field,expected,name):
+##            if field:
+##                if type(field)==int:
+##                    self
         
         if modifierObject.addTactics:
             pass
@@ -211,139 +215,6 @@ class Underling:
             prototypingLoopGovernor=random.randint(0,1)
             #increment loopStop
             loopStop-=1
-
-#
-#
-#       GRIST METHODS
-#
-#
-
-
-##    def dropGrist(self, gristType, otherGrists):
-##        nativeGrists=['build',gristType]
-##        if otherGrists:
-##            try:
-##               nativeGrists=nativeGrists+otherGrists
-##            except TypeError:
-##                if type(otherGrists)is str:
-##                    otherGrists=[otherGrists]
-##                else:
-##                    otherGrists=list(otherGrists)
-##                nativeGrists=nativeGrists+otherGrists
-##
-##        print (nativeGrists)
-##    
-##        scaleFactor=round(self.dropWorth/10)
-##        drops=0
-##        #randomly vary exact size of dropWorth
-##        if random.randint(0,1):
-##            drops=self.dropWorth+random.randint(0,5)*scaleFactor
-##        else:
-##            drops=self.dropWorth-random.randint(0,5)*scaleFactor
-##        while drops:
-##            print(drops)
-##            dropThis=random.randint(2, round(self.dropWorth*.6))
-##            drops-=dropThis
-##            #prevent overflow
-##            if drops<0:
-##                dropThis+=drops
-##                drops=0
-##            #randomly determines potential quality of drops
-##            governor=random.randint(0,30)
-##            if self.level>6 and governor < 2 and dropThis>50:
-##                self.dropExotic(dropThis)
-##            elif self.level>10 and governor < 4 and dropThis>50:
-##                self.dropExotic(dropThis)
-##            elif self.level>6 and dropThis>30 and governor<4:
-##                self.dropGreat(dropThis)
-##            elif self.level>6 and governor <8:
-##                self.dropGood(dropThis)
-##            elif self.level>1 and governor<10:
-##                self.dropRelated(nativeGrists,dropThis)
-##            elif drops>20 and governor<15:
-##                self.dropHeal(dropThis)
-##            elif self.level>4 and governor<15:
-##                self.dropRandom(dropThis)
-##            else:
-##                self.dropNative(nativeGrists, dropThis)
-##
-##    def dropIt(self, grist, amount):
-##        if grist=='build':
-##            amount*=2
-##        elif grist in self.associatedGrist:
-##            pass
-##        elif grist in self.commonGrist:
-##            pass
-##        elif grist in self.goodGrist:
-##            amount-=10
-##            if amount<2:
-##                amount=2
-##
-##        elif grist in self.greatGrist:
-##            amount=amount//2
-##            if not amount:
-##                amount=2
-##
-##        elif grist in self.capstoneGrist:
-##            amount=amount//10
-##            if not amount:
-##                amount=2
-##
-##        elif grist in self.exoticGrist:
-##            amount= amount//100+1
-##
-##
-##        self.loot.append(str(amount)+' '+grist+' grist')
-##        
-##    def dropNative(self, nativeGrists, amount):
-##        choose=random.randint(0,len(nativeGrists)-1)
-##        self.dropIt(nativeGrists[choose],amount)
-##
-##    def dropHeal(self, amount):
-##        if amount<50:
-##            self.loot.append('healing gel for 1d6')
-##        elif amount<100:
-##            self.loot.append('healing gel for 2d6')
-##        else:
-##            self.loot.append('healing gel for 4d4')
-##
-##    def dropRelated(self, grists, amount):
-##        refGrist=grists[random.randint(1,len(grists)-1)]
-##        reference = self.gristList.index(refGrist)
-##        if random.randint(0,1):
-##            newIndex=reference-6*random.randint(1,2)
-##            if newIndex<0:
-##                newIndex=reference-6
-##                if newIndex<0:
-##                    newIndex=reference
-##        else:
-##            newIndex=reference+6*random.randint(1,2)
-##            if newIndex>41:
-##                newIndex=reference+6
-##                if newIndex>41:
-##                    newIndex=reference
-##        newGrist=self.gristList[newIndex]
-##        self.dropIt(newGrist, amount)
-##
-##    def dropRandom(self, amount):
-##        grist=self.gristList[random.randint(0,41)]
-##        self.dropIt(grist,amount)
-##
-##    def dropGood(self, amount):
-##        grist=self.goodGrist[random.randint(0,11)]
-##        self.dropIt(grist,amount)
-##
-##    def dropGreat(self, amount):
-##        if not random.randint(0,5):
-##            grist=self.capstoneGrist[random.randint(0,5)]
-##        else:
-##            grist=self.greatGrist[random.randint(0,5)]
-##        self.dropIt(grist,amount)
-##
-##    def dropExotic(self,amount):
-##        grist=self.exoticGrist[random.randint(0,5)]
-##        self.dropIt(grist,amount)
-
 
 #
 #
@@ -445,17 +316,19 @@ class Underling:
         self.callPrototyping(prototyping)
         
         #ensure that grist is of a valid type
-        gristType=gristType.lower().strip()
-##        while(gristType not in self.gristList[:42]):
-##              #if grist is invalid, prompt for replacement
-##              print('Invalid grist type. Enter grist type or enter 'r' for random. /n')
-##              #get and format input
-##              gristType = input('> ').lower().strip()
-##              if gristType == 'r':
-##                  #pick a random grist type from gristList
-##                  gristType = self.gristList[random.randint(0,41)]
-##        self.getGrist(gristType)
-##        self.dropGrist(gristType, alsoDrops)
+        gristType=gristType.capitalize().strip()
+        while(gristType not in self.gristList):
+              #if grist is invalid, prompt for replacement
+              print('Invalid grist type. Enter grist type or enter 'r' for random. /n')
+              #get and format input
+              gristType = input('> ').lower().strip()
+              if gristType == 'r':
+                  #pick a random grist type from gristList
+                  gristType = random.sample(self.gristList,1)
+                  
+        gristObject=gristList[gristType]["class"](self.level)
+        self.modify(gristObject)
+        self.loot=gristObject.dropGrist(self.dropWorth,otherGrists=alsoDrops)
         if self.tacticsBucket:
             self.sortTactics()
 ##        #move this call to main once troubleshooting is done

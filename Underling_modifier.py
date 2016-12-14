@@ -1,3 +1,5 @@
+import random
+
 class Underling_modifier:
     """Create an object containing values to be used to modify an Underling object."""
     #these values will be accessed by an Underling object and used to modify the corresponding state variable within it
@@ -169,68 +171,190 @@ class Grist(Underling_modifier):
             names.add(gristList[key]["player"])
             qualities.add(gristList[key]["quality"])
         for name in names:
-            self.playerList[name]=[]
+            self.playerList[name]=dict()
             for grist in gristList:
                 if gristList[grist]["player"]==name:
-                    self.playerList[name].append(grist)
+                    self.playerList[name][grist]=gristList[grist]["class"]
         for quality in qualities:
-            self.qualityList[quality]=[]
+            self.qualityList[quality]=dict()
             for grist in gristList:
                 if gristList[grist]["quality"]==quality:
-                    self.qualityList[quality].append(grist)
+                    self.qualityList[quality][grist]=gristList[grist]["class"]
+#remove after testing
         print (self.playerList,self.qualityList, sep='\n')
+
+    def dropGrist(self,dropWorth,gristType=None,otherGrists=None):
+        dropList=[]
+        if not gristType:
+            gristType=self.__class__.__name__
+        nativeGrists=['Build',gristType]
+        if otherGrists:
+            try:
+               nativeGrists=nativeGrists+otherGrists
+            except TypeError:
+                if type(otherGrists)is str:
+                    otherGrists=[otherGrists]
+                else:
+                    otherGrists=list(otherGrists)
+                nativeGrists=nativeGrists+otherGrists
+
+#remove after testing
+        print (nativeGrists)
+
+        def dropLoot(quality, amount, nativeGrists=nativeGrists, self=self):
+            typeDropped=None
+            gristList=Grist.getList()
+            #a list of the rarest grists selected when quality is "exotic", which have no underlings with them as their native grist under normal circumstances
+            exoticGrists=["Zillium","Uranium","Alkahest","Quintessence","Illiaster","Orichalcum"] 
+            #modified by quality of grist to force better grist drops to be smaller
+
+#remove after testing
+            print(player)
+            scaleFactor=1
+            if quality in self.qualityList:
+                typeDropped=random.sample(list(self.qualityList[quality].keys()),1)
+            elif quality == "exotic":
+                typeDropped=exoticGrists[random.randint(1,len(exoticGrists))-1]
+            elif quality == "related":
+                randomNativeGrist=nativeGrists[random.randint(1,len(nativeGrists)-1)] #not an off by one error on the randint range, deliberately excluding "Build" as nativeGrists[0]
+                selectedQuality=gristList[randomNativeGrist]["quality"]
+                selctedPlayer=gristList[randomNativeGrist]["player"]
+                validQualities=None
+                if selectedQuality == "great" or selectedQuality == "capstone":
+                    validQualities == ["good","great","capstone"]
+                elif selectedQuality == "good":
+                    validQualities=["common","good","great"]
+                else:
+                    validQualities=["associated","common","good"]
+                possibleTypes=[]
+                for eachGrist in self.playerList[selectedPlayer]:
+                    if eachGrist.quality in validQualities:
+                        possibleTypes.append(eachGrist.__class__.__name__)
+                typeDropped=possibleTypes[random.randint(1,len(possibleTypes))-1]
+            elif quality == "random":
+                typeDropped=random.sample(gristList.keys(),1)
+            #if dropping "heal" the result is formatted differently, and returned directly out of the elif block
+            #rather than bothering with scale factor and formatting at the end of the method
+            elif quality == "heal":
+                healingAmount="1"
+                if amount<50:
+                    healingAmount="1d6"
+                elif amount<100:
+                    healingAmount="2d6"
+                elif amount<500:
+                    healingAmount="4d4"
+##                elif amount<1000:
+##                    healingAmount=
+##                elif amount<5000:
+##                    healingAmount=
+##                elif amount<10000:
+##                    healingAmount=
+                else:
+                    return "healing gel flower for full restoration"
+                return "healing gel cube for {}".format(healingAmount)
+
+            else:
+                typeDropped=nativeGrists[random.randint(1,len(nativeGrists))-1]
+
+            if typeDropped == "Build":
+                scaleFactor=2
+            elif typeDropped in self.qualityList["associated"] or typeDropped in self.qualityList["common"]:
+                scaleFactor=1
+            elif typeDropped in self.qualityList["good"]:
+                scaleFactor=0.8
+            elif typeDropped in self.qualityList["great"]:
+                scaleFactor=0.5
+            elif typeDropped in self.qualityList["capstone"]:
+                scaleFactor=0.1
+            else:
+                scaleFactor=0.01
+
+            finalAmount=round(amount*scaleFactor)
+
+            #gurantee at least 1 unit of grist, or two units for the best grists
+            if finalAmount<2 and (typeDropped in exoticGrists or typeDropped in self.qualityList["capstone"]):
+                finalAmount=2
+            elif finalAmount<1:
+                finalAmount=1
+
+            return "{} {} Grist".format(finalAmount,typeDropped)
+              
+
+            
+        #vary the actual amount dropped between 0.5 and 1.5 of dropWorth
+        scaleFactor=round(dropWorth/10)
+        #variabilityFactor is in terms of multiples of scaleFactor
+        varibilityFactor=5
+        dropsRemaining=0
+        if random.randint(0,1):
+            dropsRemaining=dropWorth+random.randint(0,variabilityFactor)*scaleFactor
+        else:
+            dropsRemaining=dropWorth-random.randint(0,variabilityFactor)*scaleFactor
+        while dropsRemaining:
+
+#remove after testing
+            print(dropsRemaining)
+            #determine a random amount up to 60% of the total dropWorth to put into a single loot drop
+            individualDrop=random.randint(2, round(dropWorth*.6))
+            #subtract the amount going into this loot drop from drops for the next loop
+            dropsRemaining-=individualDrop
+            #prevent dropping more loot than is in drops
+            if dropsRemaining<0:
+                individualDrop+=dropsRemaining
+                dropsRemaining=0
+            #determine potential quality of drops based on a random roll, the level of the Grist object, and the amount in a given drop
+            governorRange=30
+            governor=random.randint(0,governorRange)
+            #the random results table decreases in quality with increasing random integers
+            #if the generator rolls low, but additional conditions for that result are not met, the next best result is used, and so on
+
+            
+            #if the Grist object is level 7 or above and drop worth is greater than 50, there is a 1 in 30 chance of dropping the rarest grists
+            if self.level>6 and governor < 2 and individualDrop>50:
+                dropList.append(dropLoot("exotic",individualDrop))
+
+            #if the Grist object is level 11 or above, the chance of dropping the rarest grist increases to 3 in 30
+            elif self.level>10 and governor < 4 and individualDrop>50:
+                dropList.append(dropLoot("exotic",individualDrop))
+                
+            #if the Grist level is too low to get exotic grist but still above 4, get capstone grist instead
+            elif self.level>4 and governor < 2 and individualDrop>30:
+                dropList.append(dropLoot("capstone",individualDrop))
+                
+            elif self.level>6 and governor < 3 and individualDrop>30:
+                dropList.append(dropLoot("capstone",individualDrop))
+                
+            elif self.level>10 and governor < 5 and individualDrop>30:
+                dropList.append(dropLoot("capstone",individualDrop))
+                
+            elif self.level>6 and governor<6 and individualDrop>30:
+                dropList.append(dropLoot("great",individualDrop))
+                
+            elif self.level>6 and governor <8:
+                dropList.append(dropLoot("good",individualDrop))
+                
+            #if the Grist object is level 1, only healing and native grists may be dropped
+            elif self.level>1 and governor<11:
+                dropList.append(dropLoot("related",individualDrop))
+                
+            #totally random grist drops are only avaliable for small quantities dropped, larger quantities will give healing instead
+            elif individualDrop>20 and governor<16:
+                dropList.append(dropLoot("heal",individualDrop))
+                
+            elif self.level>4 and governor<16:
+                dropList.append(dropLoot("random",individualDrop))
+                
+            #for all levels, there is at least a flat 50% chance that the drop will be of a native grist type
+            else:
+                dropList.append(dropLoot("native",individualDrop))
+
+            return dropList
 ##
-##    def dropGrist(self, gristType, otherGrists):
-##        nativeGrists=['build',gristType]
-##        if otherGrists:
-##            try:
-##               nativeGrists=nativeGrists+otherGrists
-##            except TypeError:
-##                if type(otherGrists)is str:
-##                    otherGrists=[otherGrists]
-##                else:
-##                    otherGrists=list(otherGrists)
-##                nativeGrists=nativeGrists+otherGrists
-##
-##        print (nativeGrists)
-##    
-##        scaleFactor=round(self.dropWorth/10)
-##        drops=0
-##        #randomly vary exact size of dropWorth
-##        if random.randint(0,1):
-##            drops=self.dropWorth+random.randint(0,5)*scaleFactor
-##        else:
-##            drops=self.dropWorth-random.randint(0,5)*scaleFactor
-##        while drops:
-##            print(drops)
-##            dropThis=random.randint(2, round(self.dropWorth*.6))
-##            drops-=dropThis
-##            #prevent overflow
-##            if drops<0:
-##                dropThis+=drops
-##                drops=0
-##            #randomly determines potential quality of drops
-##            governor=random.randint(0,30)
-##            if self.level>6 and governor < 2 and dropThis>50:
-##                self.dropExotic(dropThis)
-##            elif self.level>10 and governor < 4 and dropThis>50:
-##                self.dropExotic(dropThis)
-##            elif self.level>6 and dropThis>30 and governor<4:
-##                self.dropGreat(dropThis)
-##            elif self.level>6 and governor <8:
-##                self.dropGood(dropThis)
-##            elif self.level>1 and governor<10:
-##                self.dropRelated(nativeGrists,dropThis)
-##            elif drops>20 and governor<15:
-##                self.dropHeal(dropThis)
-##            elif self.level>4 and governor<15:
-##                self.dropRandom(dropThis)
-##            else:
-##                self.dropNative(nativeGrists, dropThis)
+## Deprecating
 ##
 ##    def dropIt(self, grist, amount):
 ##        if grist=='build':
-##            amount*=2
+#            amount*=2
 ##        elif grist in self.associatedGrist:
 ##            pass
 ##        elif grist in self.commonGrist:
